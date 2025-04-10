@@ -32,5 +32,6 @@
 	<button type="submit" class="btn btn-outline-primary">비밀번호 변경</button>
 	</div>
 	</form>
+	</div>
 </body>
 </html>

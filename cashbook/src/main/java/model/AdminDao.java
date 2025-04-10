@@ -9,6 +9,35 @@ import java.sql.SQLException;
 import dto.Admin;
 
 public class AdminDao {
+	// 삭제시 비밀번호 확인 메소드
+	public boolean checkPassword(String adminId, String inputPw) throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
+		
+		// 1단계: 현재 비밀번호가 맞는지 확인
+		String sql = "SELECT admin_pw FROM admin WHERE admin_id = ?";
+		stmt = conn.prepareStatement(sql);
+		stmt.setString(1,  "admin"); // 아이디는 admin으로 고정값으로 넘기기위해
+		
+		rs = stmt.executeQuery();
+		
+		boolean result = false;
+		if(rs.next()) {
+			String realPw = rs.getString("admin_pw");
+			result = realPw.equals(inputPw); // 단순 비교
+		}
+		
+		rs.close();
+		stmt.close();
+		conn.close();
+		
+		return result;
+	}
+	
 	// 비밀번호 수정
 	public boolean updatePw(String currentPw, String newPw) throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
