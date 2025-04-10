@@ -113,7 +113,11 @@ public class CategoryDao {
 			category.setCategory_no(rs.getInt("category_no"));
 			category.setKind(rs.getString("kind"));
 			category.setTitle(rs.getString("title"));
+			category.setCreatedate(rs.getString("createdate"));
 			list.add(category); // 여기서 list가 생겨야 categoryList에 받는다.
+			
+			// 쿼리에 ALTER TABLE category
+			// MODIFY createdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP; 변경
 		}
 		return list;
 	}
@@ -127,7 +131,7 @@ public class CategoryDao {
 		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
 		
 		// 1단계: 현재 비밀번호가 맞는지 확인
-		String sql = "INSERT INTO category(kind, title) value(?, ?)";
+		String sql = "INSERT INTO category(kind, title) values(?, ?)";
 		stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		stmt.setString(1,  c.getKind());
 		stmt.setString(2,  c.getTitle());

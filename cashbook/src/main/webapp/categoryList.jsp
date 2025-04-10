@@ -33,38 +33,43 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
-</head>
 <!-- Latest compiled and minified CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<body class="d-flex justify-content-center align-items-start vh-100 bg-light">
-	<div>
+</head>
+<body class="d-flex justify-content-center align-items-start vh-100">
+	<div style="position: absolute; top: 20px; right: 480px; font-size: 14px;">
 		<%=admin.getAdmin_id() %>님 반갑습니다.
 		<a href="/cashbook/logout.jsp">로그아웃</a>
 		<a href="/cashbook/updatePwForm.jsp">비밀번호 수정</a>
 	</div>
-	<div  class="card p-4 shadow mt-5" style="width: 400px;">
-	<h4 class="text-center">가계부 리스트</h4>
+	<div  class="card p-4 shadow mt-5" style="width: 800px;">
+		 <a href="/cashbook/insertCategoryForm.jsp" class="btn btn-outline-success btn-sm position-absolute" style="top: 20px; right: 20px;">추가</a>
+  <h4 class="text-center mb-4">가계부 리스트</h4>
 	<form action="/cashbook/categoryList.jsp">
-		<table class="text-center">
-		<tr>
-			<td>번호</td>
-			<td>수입/지출</td>
-			<td>항목</td>
-			<td>수정</td>
-			<td>삭제</td>
+		<table class="table table-bordered  text-center align-middle">
+		 <thead>
+		<tr class="text-white">
+			<th class="bg-secondary">번호</th>
+			<th class="bg-secondary">수입/지출</th>
+			<th class="bg-secondary">항목</th>
+			<th class="bg-secondary">생성일</th>
+			<th class="bg-secondary">수정</th>
+			<th class="bg-secondary">삭제</th>
 		</tr>
+		</thead>
 		<%
 			for(Category c : list) {
 		%>
 		<tr>
 			<td><%=c.getCategory_no() %></td><!--  required: 꼭입력해야하는 속성 -->
-			<td><%=c.getKind() %></td>
+			<td class="text-center"> <span class="fs-5"><%= c.getKind().equals("지출") ? "💸 지출" : "💰 수입" %></span></td>
 			<td><%=c.getTitle() %></td> 
-			<td><a href="/cashbook/updateCategoryForm.jsp?categoryNo=<%=c.getCategory_no()%>">수정</a></td> 
-			<td><a href="/cashbook/deleteCategoryForm.jsp?categoryNo=<%=c.getCategory_no()%>">삭제</a></td> 
+			<td><%=c.getCreatedate() %></td> 
+			<td><a href="/cashbook/updateCategoryForm.jsp?categoryNo=<%=c.getCategory_no()%>" class="btn btn-outline-primary">수정</a></td> 
+			<td><a href="/cashbook/deleteCategoryForm.jsp?categoryNo=<%=c.getCategory_no()%>" class="btn btn-outline-danger">삭제</a></td> 
 		</tr>
 		<%
 			}

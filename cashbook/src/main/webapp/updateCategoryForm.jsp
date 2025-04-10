@@ -23,7 +23,7 @@
 	<h3 class="text-center">카테고리 수정</h3>
 	 	<form action="/cashbook/updateCategoryAction.jsp" method="post" class="d-inline-block">
 	 	<input type="hidden" name="categoryNo" value="<%=category.getCategory_no()%>">
-		<table class="text-center">
+		<table class="text-center align-middle">
 			<tr>
 				<td colspan="2" style="text-align: center;">
 				<label><input type="radio" name="kind" value="지출" <%=category.getKind().equals("지출") ? "checked" : ""%>> 지출</label> 
@@ -33,12 +33,13 @@
 				</td>
 			</tr>
 			<tr>
-				<td>항목</td>
-				<td><input type="text" name="title" value="<%=category.getTitle() %>" class="form-control"></td>
+				<td class="text-center align-middle">항목</td>
+				<td><input type="text" name="title"  placeholder="<%=category.getTitle() %>" class="form-control"></td>
 			</tr>
 		</table>
 		<div style="margin-top: 5px;" class="text-center">
 		<button type="submit" class="btn btn-outline-primary">수정하기</button>
+		<a href="/cashbook/categoryList.jsp" class="btn btn-outline-primary">돌아가기</a>
 		</div>
 		</form>
 	</div>
