@@ -45,7 +45,7 @@
 		<a href="/cashbook/logout.jsp">로그아웃</a>
 		<a href="/cashbook/updatePwForm.jsp">비밀번호 수정</a>
 	</div>
-	<div  class="card p-4 shadow mt-5" style="width: 800px;">
+	<div  class="card p-4 shadow mt-5" style="width: 80%;">
 		 <a href="/cashbook/insertCategoryForm.jsp" class="btn btn-outline-success btn-sm position-absolute" style="top: 20px; right: 20px;">추가</a>
   <h4 class="text-center mb-4">가계부 리스트</h4>
 	<form action="/cashbook/categoryList.jsp">

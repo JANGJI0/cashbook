@@ -89,6 +89,35 @@ public class CategoryDao {
 		return categoryNo;
 	}
 	
+	// kind의 의한 리스트 조회
+	public ArrayList<Category> selectCategoryListByKind(String kind) throws ClassNotFoundException, SQLException { // Excption 으로 받을 수 있다. 다형성
+		ArrayList<Category> list = new ArrayList<>();
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		// mysql 연결
+		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
+		
+		String sql = "SELECT category_no categoryNo, title, kind from category WHERE kind = ?";
+		stmt = conn.prepareStatement(sql);
+		stmt.setString(1, kind);
+		
+		rs = stmt.executeQuery();
+		
+		while (rs.next()) {
+			Category c = new Category();
+			c.setCategory_no(rs.getInt("categoryNo"));
+			c.setTitle(rs.getString("title"));
+			c.setKind(rs.getString("kind"));
+			list.add(c);
+		}
+		
+		return list;
+	}
+	
+	
 	// 리스트 조회
 	public ArrayList<Category> selectCategoryList(Paging p) throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
