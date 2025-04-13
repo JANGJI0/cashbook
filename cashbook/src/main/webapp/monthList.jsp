@@ -57,6 +57,8 @@
 		HashMap<Integer, Integer> incomeAmountMap = dao.selectTotalAmountByDay(year, month, "수입");
 		HashMap<Integer, Integer> expenseAmountMap = dao.selectTotalAmountByDay(year, month, "지출");
 		
+		 HashMap<Integer, String> memoMap = dao.selectMemoMapBy(year, month);
+		
 	
 %>
 
@@ -91,6 +93,18 @@
 		margin-bottom: 6px;
 	}
 
+	.calendar-day-line {
+		position: absolute;
+		top: 4px;
+		left: 6px;
+		width: calc(100% - 12px);
+		font-weight: bold;
+		font-size: 14px;
+		border-bottom: 1px solid #ccc;
+		padding-bottom: 2px;
+		margin-bottom: 4px;
+		text-align: left;
+	}
 	.calendar-content {
 		margin-top: 24px;
 		font-size: 12px;
@@ -98,16 +112,49 @@
 </style>
 </head>
 <body class="bg-light">
-	<div  class="container-fluid mt-4">
-	<h1 class="text-center mb-4">가계부 달력</h1>
+<!--  전체를 감싸는 테이블 -->
+	<table class="w-100" style="table-layout: fixed; margin: 20px 40px 40px 5px;">
+	<tr>
+	<!--  왼쪽 로그인 상태창 -->
+	<td style="width: 230px; border-right: 1px solid #ccc; vertical-align: top; text-align: center;  padding-top: 50px;">
+		<h5 class="mb-3" style="font-weight: bold;">관리자님 반갑습니다.</h5>
+		<p><%=admin.getAdmin_id() %></p><!-- <p> 쓰는 이유 : 문단을 나타내는 태그 -->
+		<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 40px;">
+		 <!-- 가로 버튼 -->
+	  		<div class="d-flex justify-content-center gap-2 mb-2">
+				<a href="/cashbook/logout.jsp" class="btn btn-outline-danger btn-sm">로그아웃</a> 
+				<a href="/cashbook/updatePwForm.jsp" class="btn btn-outline-danger btn-sm">정보수정</a>
+			</div>
+				<hr>
+				<!-- 수입/지출 총액 제목 -->
+				<h6 class="text-center mt-1 mb-1" style="font-weight: bold;">수입/지출 총액</h6>
+				
+				<!-- 버튼 목록 -->
+				<div class="d-flex flex-column align-items-center gap-2">
+				  <a href="/cashbook/totalAll.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">전체</a>
+				  <a href="/cashbook/totalYear.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">년도별</a>
+				  <a href="/cashbook/totalMonth.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">월별</a>
+				  <a href="/cashbook/totalCustom.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">특정년도</a>
+				</div>
+		</div>
+	</td>
 	
-	<div class="d-flex justify-content-center align-items-center gap-3 mb-4">
-	<a href="/cashbook/monthList.jsp?targetMonth=<%=firstDate.get(Calendar.MONTH) - 1%>">◀</a>
-	<h3 class= class="mb-0"><%=firstDate.get(Calendar.YEAR)%>년 <%=firstDate.get(Calendar.MONTH)+1%>월</h3>
-	<a href="/cashbook/monthList.jsp?targetMonth=<%=firstDate.get(Calendar.MONTH) + 1%>">▶</a>
-	<a href="/cashbook/insertCashForm.jsp?y=<%=year%>&m=<%=month %>" class="btn btn-outline-success btn-sm position-absolute" style="right: 20px;">+ 수입/지출 등록</a>
+	<!-- 오른쪽 달력 전체 -->
+	<td style="padding: 1px 30px; vertical-align: top;">	
+		<h2 class="text-left mb-2">가계부 달력</h2>
+		
+		<div class="d-flex justify-content-between align-items-center mb-2">
+			<div class="d-flex align-items-center mx-auto">
+				<a href="/cashbook/monthList.jsp?targetMonth=<%=firstDate.get(Calendar.MONTH) - 1%>" class="btn btn-outline-secondary btn-sm me-2">◀</a>
+				<h3 class="m-0"><%=firstDate.get(Calendar.YEAR)%>년 <%=firstDate.get(Calendar.MONTH)+1%>월</h3>
+				<a href="/cashbook/monthList.jsp?targetMonth=<%=firstDate.get(Calendar.MONTH) + 1%>"  class="btn btn-outline-secondary btn-sm">▶</a>
+			</div>
+				<div>
+				<a href="/cashbook/insertCategoryForm.jsp?y=<%=year%>&m=<%=month %>" class="btn btn-outline-success btn-sm me-1">항목 추가</a>
+				<a href="/cashbook/insertCashForm.jsp?y=<%=year%>&m=<%=month %>" class="btn btn-outline-success btn-sm me-1">+ 수입/지출 등록</a>
+			</div>
+		</div>
       <!-- 이슈 : 1월이면 이전이면 -1, 12월에 다음이면 12가 넘어가는데? Calendar API안에서 자동으로 계산 -->
-   </div>
 	<form>
 	<table class="table table-bordered text-center w-100" style="table-layout: fixed;">
 	 <thead class="table-light">
@@ -132,20 +179,27 @@
 					}
 						int d = i - startBlank;
 			%>
-				<td class="calendar-cell">
+				<td class="calendar-cell"
 					<%
 						
 						if(d > 0 && d <= lastDate) {
-					%>
-						<td onclick="location.onclick=href='/cashbook/insertCashForm.jsp?y=<%=year%>&m=<%=month%>&d=<%=d%>'"
-								style="cursor:pointer; position: relative;"
-					<%
+							out.print(" onclick=\"location.href='/cashbook/cashDetail/cashOne.jsp?y=" + year + "&m=" + month + "&d=" + d + "'\" style=\"cursor:pointer; position: relative;\"");
 						}
-					%>>
+					%>
+						>
 					<%
 						if(d > 0 && d <= lastDate) {
 					%>
-							<div class="calendar-day"><%=d %></div>
+							<div class="calendar-day-line"><%=d %>
+							<%
+								// 예시: 메모가 있을 경우 (가정: memoMap에 해당 날짜에 메모 여부 저장)
+								  if(memoMap.containsKey(d)) { 
+							%>
+								<span title="메모 있음" class="float-end">📝</span>
+							<%
+								}
+							%>
+							</div>
 							<div class="calendar-content"></div>
 						
 					<%
@@ -183,7 +237,9 @@
 			</tbody>
 		</table>
 		</form>
-	</div>
+	</td>
+	</tr>
+</table>
 </body>
 </html>
 

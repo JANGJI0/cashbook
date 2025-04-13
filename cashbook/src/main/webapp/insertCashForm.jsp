@@ -49,50 +49,79 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>수입/지출 입력</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+	body {
+		background-color: #f8f9fa;
+		padding: 30px;
+	}
+	.card {
+		max-width: 600px;
+		margin: 0 auto;
+	}
+</style>
 </head>
 <body>
-	<h1>수입/지출 선택</h1>
-	<form action="/cashbook/insertCashForm.jsp" method="post">
+<div class="card shadow p-4">
+	<h2 class="mb-4 text-center">수입/지출 입력</h2>
+
+	<!-- 수입/지출 선택 폼 -->
+	<!-- 수입/지출 선택 폼 (버튼 형태로 바꿈) -->
+<form action="/cashbook/insertCashForm.jsp" method="post" class="mb-4">
 	<input type="hidden" name="y" value="<%=year%>">
 	<input type="hidden" name="m" value="<%=month%>">
-		<input type="hidden" name="cashDate" value="<%=cashDate%>"> <!-- 그냥 넘어가면 cashDate가 안넘어오기때문 hidden값으로 받아온다 -->
-		<select name="kind" onchange="this.form.submit()">
-			<option value="" >:::선택:::</option> <!-- 같은 값으면 옵션값 생략 가능 --> <!--  선택하고 고정되게 -->
-			<option value="수입"<%= "수입".equals(kind) ? "selected" : "" %>>수입</option> <!-- 같은 값으면 옵션값 생략 가능 -->
-			<option value="지출"<%= "지출".equals(kind) ? "selected" : "" %>>지출</option> <!-- 같은 값으면 옵션값 생략 가능 -->
-		</select>
-		<button type="submit">수입/지출 선택</button>
-	</form>
-	<h1>금액 이력 추가</h1>
+	<input type="hidden" name="cashDate" value="<%=cashDate%>"> <!-- 그냥 넘어가면 cashDate가 안넘어오기때문 hidden값으로 받아온다 -->
+
+	<label class="form-label">수입/지출 선택</label>
+	<div class="btn-group w-100 mb-3" role="group" aria-label="수입지출선택">
+		<input type="radio" class="btn-check" name="kind" id="btn-income" value="수입" autocomplete="off" onchange="this.form.submit()" <%= "수입".equals(kind) ? "checked" : "" %>>
+		<label class="btn btn-outline-primary" for="btn-income">수입</label>
+
+		<input type="radio" class="btn-check" name="kind" id="btn-expense" value="지출" autocomplete="off" onchange="this.form.submit()" <%= "지출".equals(kind) ? "checked" : "" %>>
+		<label class="btn btn-outline-danger" for="btn-expense">지출</label>
+	</div>
+
+</form>
+
+	<!-- 금액 이력 추가 폼 -->
 	<form action="/cashbook/insertCashAction.jsp" method="post">
-	<input type="hidden" name="y" value="<%=year%>">
-	<input type="hidden" name="m" value="<%=month%>">
-	<input type="hidden" name="kind" value="<%=kind %>">
-		날짜 : <select name="d" required>
+		<input type="hidden" name="y" value="<%=year%>">
+		<input type="hidden" name="m" value="<%=month%>">
+		<input type="hidden" name="kind" value="<%=kind %>">
+
+		<div class="mb-3">
+			<label for="d" class="form-label">날짜</label>
+			<select name="d" class="form-select" required>
 				<option value="">:::일 선택:::</option>
-				<%
-					for(int d = 1; d <= lastDay; d++) {
-				%>
+				<% for(int d = 1; d <= lastDay; d++) { %>
 					<option value="<%=d%>"><%=d %>일</option>
-				<%
-					}
-				%>
-		</select><br> <!-- 날짜 수정안되고 그날짜에만 하니까 readyonly-->
-		항목 : <select name="categoryNo" required>
-				<%
-					if (list != null) {
-						for(Category c : list) {
-				%>
-				 <option value="<%=c.getCategory_no()%>"><%=c.getTitle() %></option>
-				<%
-						}
-					}
-				%>
-		</select>
-		메모 : <input type="text" name="memo"><br>
-		금액 : <input type="number" name="amount" required> 원<br>
-		<button type="submit">수입/지출 입력</button>
+				<% } %>
+			</select>
+		</div>
+
+		<div class="mb-3">
+			<label for="categoryNo" class="form-label">항목</label>
+			<select name="categoryNo" class="form-select" required>
+				<% if (list != null) {
+					for(Category c : list) { %>
+						<option value="<%=c.getCategory_no()%>"><%=c.getTitle() %></option>
+				<% } } %>
+			</select>
+		</div>
+
+		<div class="mb-3">
+			<label for="memo" class="form-label">메모</label>
+			<input type="text" name="memo" class="form-control" placeholder="간단한 설명을 입력하세요">
+		</div>
+
+		<div class="mb-3">
+			<label for="amount" class="form-label">금액</label>
+			<input type="number" name="amount" class="form-control" required> 원
+		</div>
+
+		<button type="submit" class="btn btn-primary w-100">수입/지출 입력</button>
 	</form>
+</div>
 </body>
 </html>

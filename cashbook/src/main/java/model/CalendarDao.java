@@ -5,9 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import dto.CalendarData;
+import dto.Cash;
 
 public class CalendarDao {
 	
@@ -89,6 +91,72 @@ public class CalendarDao {
 			return map;
 		
 	}
+	
+	// 날짜별 메모 가져오기
+	public HashMap<Integer, String> selectMemoMapBy(int year, int month) throws ClassNotFoundException, SQLException {
+	    HashMap<Integer, String> memoMap = new HashMap<>();
+
+	    Class.forName("com.mysql.cj.jdbc.Driver");
+	    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+
+	    String sql = "SELECT DAY(cash_date) day, memo FROM cash " +
+	                 "WHERE YEAR(cash_date) = ? AND MONTH(cash_date) = ? AND memo IS NOT NULL AND memo != ''";
+
+	    stmt = conn.prepareStatement(sql);
+	    stmt.setInt(1, year);
+	    stmt.setInt(2, month);
+
+	    rs = stmt.executeQuery();
+	    while(rs.next()) {
+	        memoMap.put(rs.getInt("day"), rs.getString("memo"));
+	    }
+
+	    rs.close();
+	    stmt.close();
+	    conn.close();
+
+	    return memoMap;
+	}
+	
+	// cash detail 메소드
+		// 특정 날짜 수입/지출 내역 리스트
+		public ArrayList<Cash> selectCashListByDate(int year, int month, int day) throws Exception {
+		    ArrayList<Cash> list = new ArrayList<>();
+		    Class.forName("com.mysql.cj.jdbc.Driver");
+		    PreparedStatement stmt = null;
+		    ResultSet rs = null;
+		    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
+
+		    String sql = "SELECT c.cash_no, ct.kind, ct.title, c.amount, c.memo, c.createdate "
+		               + "FROM cash c INNER JOIN category ct ON c.category_no = ct.category_no "
+		               + "WHERE YEAR(c.cash_date)=? AND MONTH(c.cash_date)=? AND DAY(c.cash_date)=? "
+		               + "ORDER BY c.createdate DESC";
+		    
+		    stmt = conn.prepareStatement(sql);
+		    stmt.setInt(1, year);
+		    stmt.setInt(2, month);
+		    stmt.setInt(3, day);
+
+		     rs = stmt.executeQuery();
+		    while(rs.next()) {
+		        Cash cash = new Cash();
+		        cash.setCash_no(rs.getInt("cash_no"));
+		        cash.setKind(rs.getString("kind"));
+		        cash.setCategoryTitle(rs.getString("title"));
+		        cash.setAmount(rs.getInt("amount"));
+		        cash.setMemo(rs.getString("memo"));
+		        cash.setCreatedate(rs.getString("createdate"));
+		        list.add(cash);
+		    }
+
+		    rs.close();
+		    stmt.close();
+		    conn.close();
+
+		    return list;
+		}
 }
 
 

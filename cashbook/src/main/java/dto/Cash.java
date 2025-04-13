@@ -4,6 +4,8 @@ public class Cash {
 	private int cash_no;
 	private int category_no;
 	private String cash_date;
+	private String kind;
+	private String categoryTitle;
 	private int amount;
 	private String memo;
 	private String color;
@@ -56,6 +58,18 @@ public class Cash {
 	}
 	public void setUpdatedate(String updatedate) {
 		this.updatedate = updatedate;
+	}
+	public String getKind() {
+		return kind;
+	}
+	public void setKind(String kind) {
+		this.kind = kind;
+	}
+	public String getCategoryTitle() {
+		return categoryTitle;
+	}
+	public void setCategoryTitle(String categoryTitle) {
+		this.categoryTitle = categoryTitle;
 	}
 	
 }

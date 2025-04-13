@@ -17,7 +17,7 @@
 	// 3. 로그인 성공 여부확인
 	if(loginAdmin != null) {
 		session.setAttribute("loginAdmin", loginAdmin); // 세션에 로그인 정보 저장
-		response.sendRedirect("/cashbook/categoryList.jsp"); // 로그인 성공 시 이동
+		response.sendRedirect("/cashbook/monthList.jsp"); // 로그인 성공 시 이동
 	} else {
 		out.println("<script>alert('로그인에 실패하였습니다.'); history.back();</script>");
 		//response.sendRedirect("/cashbook/loginForm.jsp?"); // 실패시 로그인 폼
