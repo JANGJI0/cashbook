@@ -7,9 +7,12 @@
     int cashNo = Integer.parseInt(request.getParameter("cashNo"));
     CashDao cashDao = new CashDao();
     CategoryDao categoryDao = new CategoryDao();
-
+    ReceiptDao receiptDao = new ReceiptDao();
+    
     Cash cash = cashDao.selectCashOne(cashNo);
     ArrayList<Category> categoryList = categoryDao.selectCategoryListByKind(cash.getKind());
+    
+    Receipt receipt = receiptDao.selectReceiptByCashNo(cashNo); // 영수증 가져오기
 %>
 
 <!DOCTYPE html>
@@ -69,12 +72,31 @@
             <label class="form-label">금액</label>
             <input type="number" name="amount" class="form-control" value="<%=cash.getAmount()%>" required>
         </div>
-
+ <!-- 📎 영수증 이미지 영역 -->
+    <% if (receipt != null && receipt.getFilename() != null && !receipt.getFilename().equals("")) { %>
+        <div class="text-center mb-4">
+            <h5>영수증</h5>
+            <img src="<%=request.getContextPath()%>/upload/<%=receipt.getFilename()%>" alt="영수증 이미지" class="img-thumbnail" style="max-width: 300px;">
+        </div>
+    <% } else { %>
+        <div class="text-center mb-4 text-muted">📎 첨부된 영수증이 없습니다.</div>
+    <% } %>
         <div class="d-flex justify-content-between">
             <a href="/cashbook/monthList.jsp?targetMonth=<%=Integer.parseInt(cash.getCash_date().split("-")[1]) - 1%>" class="btn btn-secondary">← 돌아가기</a>
+			 <%-- 영수증이 있는 경우: 수정/삭제 --%>
+    <% if (receipt != null && receipt.getFilename() != null && !receipt.getFilename().equals("")) { %>
+        <div class="d-flex gap-2">
+            <a href="/cashbook/cashDetail/insertReceiptForm.jsp?cashNo=<%=cash.getCash_no()%>" class="btn btn-warning">영수증 수정</a>
+            <a href="/cashbook/cashDetail/deleteReceiptAction.jsp?cashNo=<%=cash.getCash_no()%>" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">영수증 삭제</a>
+        </div>
+    <% } else { %>
+        <%-- 영수증이 없을 경우: 첨부만 --%>
+        <a href="/cashbook/cashDetail/insertReceiptForm.jsp?cashNo=<%=cash.getCash_no()%>" class="btn btn-secondary">영수증 첨부</a>
+    <% } %>
             <button type="submit" class="btn btn-primary">수정 완료</button>
         </div>
     </form>
+   
 </div>
 </body>
 </html>

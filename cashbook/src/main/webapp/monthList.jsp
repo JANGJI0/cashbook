@@ -13,6 +13,8 @@
 			return;
 		}
 		
+		
+		
 
 	// 현재 월이 4.11 -> 4.1 (firstDate.set(Calendar.DATE, 1);) 바꿨기 때문에 1일로 된다.
 	Calendar firstDate = Calendar.getInstance();
@@ -58,6 +60,8 @@
 		HashMap<Integer, Integer> expenseAmountMap = dao.selectTotalAmountByDay(year, month, "지출");
 		
 		 HashMap<Integer, String> memoMap = dao.selectMemoMapBy(year, month);
+		 
+		 
 		
 	
 %>
@@ -75,7 +79,7 @@
 <style>
 	.calendar-cell {
 		position: relative;
-		height: 100px;
+		height: 150px;
 		vertical-align: top;
 		padding: 6px;
 		font-size: 14px;
@@ -116,7 +120,7 @@
 	<table class="w-100" style="table-layout: fixed; margin: 20px 40px 40px 5px;">
 	<tr>
 	<!--  왼쪽 로그인 상태창 -->
-	<td style="width: 230px; border-right: 1px solid #ccc; vertical-align: top; text-align: center;  padding-top: 50px;">
+	<td style="width: 230px;  height: 200px; border-right: 1px solid #ccc; vertical-align: top; text-align: center;  padding-top: 50px;">
 		<h5 class="mb-3" style="font-weight: bold;">관리자님 반갑습니다.</h5>
 		<p><%=admin.getAdmin_id() %></p><!-- <p> 쓰는 이유 : 문단을 나타내는 태그 -->
 		<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 40px;">

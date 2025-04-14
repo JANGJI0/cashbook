@@ -7,6 +7,15 @@
 
 	CashDao dao = new CashDao();
 	ArrayList<Cash> list = dao.selectCashListByDate(y, m, d);
+	
+	// 영수증 확인 여부 체크
+	ReceiptDao receiptDao = new ReceiptDao();
+	HashMap<Integer, Boolean> receiptMap = new HashMap<>();
+
+	for (Cash c : list) {
+		boolean hasReceipt = receiptDao.hasReceipt(c.getCash_no());
+		receiptMap.put(c.getCash_no(), hasReceipt);
+	}
 %>
 
 <!DOCTYPE html>
@@ -29,7 +38,7 @@
 <body>
 <div class="card shadow p-4">
 	<h2 class="mb-4 text-center"><%=y %>년 <%=m %>월 <%=d %>일 수입/지출 내역</h2>
-	<a href="/cashbook/monthList.jsp?targetMonth=<%=m-1%>" class="btn btn-secondary mb-3">← 달력으로 돌아가기</a>
+	<a href="/cashbook/monthList.jsp?y=<%=y%>&m=<%=m%>&d=<%=d%>" class="btn btn-secondary mb-3">← 달력으로 돌아가기</a>
 
 	<table class="table table-bordered text-center align-middle">
 		<thead class="table-light">
@@ -41,6 +50,7 @@
 				<th>작성일</th>
 				<th>수정</th>
 				<th>삭제</th>
+				<th>영수증</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -65,12 +75,27 @@
 						<button type="submit" class="btn btn-outline-danger btn-sm">삭제</button>
 					</form>
 				</td>
+				<td>
+					<%
+						boolean hasReceipt = receiptMap.getOrDefault(c.getCash_no(), false);
+						if (hasReceipt) {
+					%>
+						<a href="/cashbook/cashDetail/receiptView.jsp?cashNo=<%=c.getCash_no()%>" class="text-success text-decoration-none">✅ 있음
+					<%
+						} else {
+					%>
+						<span class="text-muted">❌ 없음</span>
+					<%
+						}
+					%>
+					
+				</td>
 			</tr>
 			<%
 				}
 				if(list.size() == 0){
 			%>
-			<tr><td colspan="7">입력된 내역이 없습니다.</td></tr>
+			<tr><td colspan="8">입력된 내역이 없습니다.</td></tr>
 			<%
 				}
 			%>
