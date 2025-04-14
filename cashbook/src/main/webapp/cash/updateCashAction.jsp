@@ -3,7 +3,6 @@
 <%@ page import="dto.*" %>
 
 <%
-	request.setCharacterEncoding("UTF-8");
 
 	int cashNo = Integer.parseInt(request.getParameter("cashNo"));
 	int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
@@ -35,5 +34,5 @@
 	CashDao dao = new CashDao();
 	int row = dao.updateCash(cash);
 
-	response.sendRedirect("/cashbook/cashDetail/cashOne.jsp?y=" + y + "&m=" + m + "&d=" + d);
+	response.sendRedirect("/cashbook/cash/cashOne.jsp?y=" + y + "&m=" + m + "&d=" + d);
 %>

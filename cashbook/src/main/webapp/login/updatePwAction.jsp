@@ -6,7 +6,7 @@
 			Admin admin = (Admin)session.getAttribute("loginAdmin");
 				
 		if(admin == null) { // 로그아웃 상태라면
-			response.sendRedirect("/cashbook/loginForm.jsp");
+			response.sendRedirect("/cashbook/login/loginForm.jsp");
 			return;
 		}
 		
@@ -35,7 +35,7 @@
 		boolean updatePw = adminDao.updatePw(currentPw, newPw);
 		
 		if(updatePw) {
-			out.println("<script>alert('비밀번호가 성공적으로 변경되었습니다.'); location.href='/cashbook/loginForm.jsp';</script>");
+			out.println("<script>alert('비밀번호가 성공적으로 변경되었습니다.'); location.href='/cashbook/login/loginForm.jsp';</script>");
 		} else {
 			out.println("<script>alert('현재 비밀번호가 일치하지 않습니다.'); history.back();</script>");
 		}

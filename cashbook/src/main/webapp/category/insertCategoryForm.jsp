@@ -14,7 +14,7 @@
 <div class="card shadow p-4 mt-5" style="width: 400px;">
     <h3 class="text-center mb-4">📋 카테고리 입력</h3>
 
-    <form action="/cashbook/insertCategoryAction.jsp" method="post">
+    <form action="/cashbook/category/insertCategoryAction.jsp" method="post">
         <!-- 수입/지출 버튼식 선택 -->
         <div class="mb-3">
             <label class="form-label">수입/지출 구분</label>

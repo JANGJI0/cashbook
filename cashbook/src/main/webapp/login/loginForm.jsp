@@ -13,7 +13,7 @@
 <body class="d-flex justify-content-center align-items-start vh-100 bg-light"> <!-- bootstrap에서 웹사이트 가운데 정렬 -->
 <div  class="card p-4 shadow mt-5" style="width: 350px;">
 	<h1 class="text-center">로그인</h1>
-	 	<form action="/cashbook/loginAction.jsp" method="post" class="d-inline-block">
+	 	<form action="/cashbook/login/loginAction.jsp" method="post" class="d-inline-block">
 		<table class="text-center">
 			<tr>
 				<td>아이디</td>

@@ -7,7 +7,7 @@
 			Admin admin = (Admin)session.getAttribute("loginAdmin");
 				
 		if(admin == null) { // 로그아웃 상태라면
-			response.sendRedirect("/cashbook/loginForm.jsp");
+			response.sendRedirect("/cashbook/login/loginForm.jsp");
 			return;
 		}
 		
@@ -20,7 +20,7 @@
 		if(pwMatch) {
 			CategoryDao categoryDao = new CategoryDao();
 			int row = categoryDao.deleteCategory(categoryNo);
-			response.sendRedirect("/cashbook/categoryList.jsp");
+			response.sendRedirect("/cashbook/category/categoryList.jsp");
 		} else {
 			out.println("<script>alert('비밀번호가 틀립니다.'); history.back();</script>");
 		}

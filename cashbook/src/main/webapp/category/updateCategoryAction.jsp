@@ -15,7 +15,7 @@
   int row = dao.updateCategory(category);
 
   if(row == 1) {
-    response.sendRedirect("/cashbook/categoryList.jsp");
+    response.sendRedirect("/cashbook/category/categoryList.jsp");
   } else {
     out.println("<script>alert('수정 실패'); history.back();</script>");
   }

@@ -17,7 +17,7 @@
 	
 	if (!dao.isDuplicateTitle(category.getTitle())) {
 	    dao.insertCategory(category);
-	    response.sendRedirect("/cashbook/categoryList.jsp");
+	    response.sendRedirect("/cashbook/category/categoryList.jsp");
 	} else {
 	    out.println("<script>alert('이미 등록된 항목입니다.'); history.back();</script>");
 }

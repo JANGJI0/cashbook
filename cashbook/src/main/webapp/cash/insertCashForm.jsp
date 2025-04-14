@@ -85,7 +85,7 @@
 </form>
 
 	<!-- 금액 이력 추가 폼 -->
-	<form action="/cashbook/insertCashAction.jsp" method="post">
+	<form action="/cashbook/cash/insertCashAction.jsp" method="post">
 		<input type="hidden" name="y" value="<%=year%>">
 		<input type="hidden" name="m" value="<%=month%>">
 		<input type="hidden" name="kind" value="<%=kind %>">
@@ -122,6 +122,10 @@
 
 		<button type="submit" class="btn btn-primary w-100">수입/지출 입력</button>
 	</form>
+</div>
+<hr>
+<div class="text-center">
+  <a href="/cashbook/monthList.jsp?y=<%=y%>&m=<%=m%>" class="btn btn-secondary d-block" style="width: 600px; margin: 0 auto;">← 돌아가기</a>
 </div>
 </body>
 </html>

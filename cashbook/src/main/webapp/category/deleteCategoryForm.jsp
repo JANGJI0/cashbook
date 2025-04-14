@@ -19,7 +19,7 @@
 	<div  class="card p-4 shadow mt-5" style="width: 800px;">
 	<h3 class="text-center mb-4">비밀번호를 입력해 주세요</h3>
 	
-	<form action="/cashbook/deleteCategoryAction.jsp" method="post" class="d-inline-block">
+	<form action="/cashbook/category/deleteCategoryAction.jsp" method="post" class="d-inline-block">
 		<input class="text-center align-middle" type="hidden" name="categoryNo" value="<%=categoryNo%>" >
 		<div class="mb-3 text-center">
 		<input type="password" name="adminPw" placeholder="관리자 비밀번호" class="text-center align-middle"> 

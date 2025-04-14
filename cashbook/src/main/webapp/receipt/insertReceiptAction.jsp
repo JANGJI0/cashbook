@@ -11,8 +11,8 @@
 	
 	if (yStr == null || mStr == null || dStr == null ||
 		yStr.equals("") || mStr.equals("") || dStr.equals("")) {
-		response.sendRedirect("/cashbook/cashDetail/cashOne.jsp");
-		return;
+		 out.println("<h3 style='color:red;'>잘못된 접근입니다. 날짜 정보가 없습니다.</h3>");
+		    return;
 	}
 	
 	int y = Integer.parseInt(yStr);
@@ -73,7 +73,7 @@
 	ReceiptDao dao = new ReceiptDao();
 	dao.deleteReceiptByCashNo(cashNo); // 기존 거 있으면 삭제
 	dao.insertReceipt(r);
-	response.sendRedirect("/cashbook/cashDetail/cashOne.jsp?y=" + y + "&m=" + m + "&d=" + d);
+	response.sendRedirect("/cashbook/cash/updateCashForm.jsp?cashNo=" + cashNo + "&y=" + y + "&m=" + m + "&d=" + d);
 %>
 
 

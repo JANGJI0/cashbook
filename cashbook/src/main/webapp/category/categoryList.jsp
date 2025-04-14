@@ -10,7 +10,7 @@
 			session.setAttribute("loginAdmin", admin);
 				
 		if(admin == null) { // 로그아웃 상태라면
-			response.sendRedirect("/cashbook/loginForm.jsp");
+			response.sendRedirect("/cashbook/login/loginForm.jsp");
 			return;
 		}
 		
@@ -24,6 +24,10 @@
 		p.setCurrentPage(currentPage);
 		p.setRowPerPage(10);
 		ArrayList<Category> list = categoryDao.selectCategoryList(p);
+		
+		String y = request.getParameter("y");
+		String m = request.getParameter("m");
+		String d = request.getParameter("d");
 		
 		
 		
@@ -40,15 +44,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body class="d-flex justify-content-center align-items-start vh-100">
-	<div style="position: absolute; top: 20px; right: 480px; font-size: 14px;">
+	<div style="position: absolute; top: 20px; right: 200px; font-size: 14px;">
 		<%=admin.getAdmin_id() %>님 반갑습니다.
-		<a href="/cashbook/logout.jsp">로그아웃</a>
-		<a href="/cashbook/updatePwForm.jsp">비밀번호 수정</a>
+		<a href="/cashbook/login/logout.jsp">로그아웃</a>
+		<a href="/cashbook/login/updatePwForm.jsp">비밀번호 수정</a>
 	</div>
 	<div  class="card p-4 shadow mt-5" style="width: 80%;">
-		 <a href="/cashbook/insertCategoryForm.jsp" class="btn btn-outline-success btn-sm position-absolute" style="top: 20px; right: 20px;">추가</a>
+		 <a href="/cashbook/monthList.jsp?y=<%=y%>&m=<%=m%>&d=<%=d%>" class="btn btn-outline-success btn-sm position-absolute" style="top: 20px; right: 20px;">달력으로 돌아가기</a>
+		 <a href="/cashbook/category/insertCategoryForm.jsp" class="btn btn-outline-success btn-sm position-absolute" style="top: 20px; right: 170px;">추가</a>
   <h4 class="text-center mb-4">가계부 리스트</h4>
-	<form action="/cashbook/categoryList.jsp">
+	<form action="/cashbook/categroy/categoryList.jsp">
 		<table class="table table-bordered  text-center align-middle">
 		 <thead>
 		<tr class="text-white">
@@ -68,8 +73,8 @@
 			<td class="text-center"> <span class="fs-5"><%= c.getKind().equals("지출") ? "💸 지출" : "💰 수입" %></span></td>
 			<td><%=c.getTitle() %></td> 
 			<td><%=c.getCreatedate() %></td> 
-			<td><a href="/cashbook/updateCategoryForm.jsp?categoryNo=<%=c.getCategory_no()%>" class="btn btn-outline-primary">수정</a></td> 
-			<td><a href="/cashbook/deleteCategoryForm.jsp?categoryNo=<%=c.getCategory_no()%>" class="btn btn-outline-danger">삭제</a></td> 
+			<td><a href="/cashbook/category/updateCategoryForm.jsp?categoryNo=<%=c.getCategory_no()%>" class="btn btn-outline-primary">수정</a></td> 
+			<td><a href="/cashbook/category/deleteCategoryForm.jsp?categoryNo=<%=c.getCategory_no()%>" class="btn btn-outline-danger">삭제</a></td> 
 		</tr>
 		<%
 			}

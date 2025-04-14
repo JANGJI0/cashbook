@@ -64,10 +64,11 @@ public class CalendarDao {
 		  HashMap<Integer, Integer> map = new HashMap<>();
 		  
 			Class.forName("com.mysql.cj.jdbc.Driver");
-		    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
+			Connection conn = null;
 		    PreparedStatement stmt = null;
 		    ResultSet rs = null;
 		    
+		    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
 		    String sql = "SELECT DAY(cash_date) day, SUM(amount) total "
 		    				+ "FROM cash c "
 		    				+ "INNER JOIN category ct ON c.category_no = ct.category_no "
@@ -97,10 +98,11 @@ public class CalendarDao {
 	    HashMap<Integer, String> memoMap = new HashMap<>();
 
 	    Class.forName("com.mysql.cj.jdbc.Driver");
-	    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
+	    Connection conn = null;
 	    PreparedStatement stmt = null;
 	    ResultSet rs = null;
-
+	    
+	    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
 	    String sql = "SELECT DAY(cash_date) day, memo FROM cash " +
 	                 "WHERE YEAR(cash_date) = ? AND MONTH(cash_date) = ? AND memo IS NOT NULL AND memo != ''";
 
@@ -118,6 +120,38 @@ public class CalendarDao {
 	    conn.close();
 
 	    return memoMap;
+	}
+	
+	// 날짜별 영수증 가져오기
+	public HashMap<Integer, Boolean> selectReceiptMapBy(int year, int month) throws Exception { // Boolean으로하는이유: 영수증은 하나라도 있으면  true로 표현하면되기때문
+	    HashMap<Integer, Boolean> receiptMap = new HashMap<>();
+	    
+	    Class.forName("com.mysql.cj.jdbc.Driver");
+	    Connection conn = null;
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+
+	    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
+	    String sql = 
+	        "SELECT DISTINCT DAY(c.cash_date) AS day " +
+	        "FROM cash c " +
+	        "INNER JOIN receipt r ON c.cash_no = r.cash_no " +
+	        "WHERE YEAR(c.cash_date) = ? AND MONTH(c.cash_date) = ?";
+
+	    stmt = conn.prepareStatement(sql);
+	    stmt.setInt(1, year);
+	    stmt.setInt(2, month);
+	    rs = stmt.executeQuery();
+
+	    while (rs.next()) {
+	        receiptMap.put(rs.getInt("day"), true);
+	    }
+
+	    rs.close();
+	    stmt.close();
+	    conn.close();
+
+	    return receiptMap;
 	}
 	
 	// cash detail 메소드

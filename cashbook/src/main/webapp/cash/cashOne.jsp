@@ -56,6 +56,7 @@
 		<tbody>
 			<%
 				for(Cash c : list){
+					System.out.println("cash_no 확인: " + c.getCash_no()); // 디버깅 // 3
 			%>
 			<tr>
 				<td><%=c.getCategoryTitle()%></td>
@@ -64,10 +65,10 @@
 				<td><%=c.getMemo()%></td>
 				<td><%=c.getCreatedate()%></td>
 				<td>
-					<a href="/cashbook/cashDetail/updateCashForm.jsp?cashNo=<%=c.getCash_no()%>" class="btn btn-outline-primary btn-sm">수정</a>
+					<a href="/cashbook/cash/updateCashForm.jsp?cashNo=<%=c.getCash_no()%>&y=<%=y%>&m=<%=m%>&d=<%=d%>" class="btn btn-outline-primary btn-sm">수정</a>
 				</td>
 				<td>
-					<form action="/cashbook/cashDetail/deleteCashAction.jsp" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+					<form action="/cashbook/cash/deleteCashAction.jsp" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
 						<input type="hidden" name="cashNo" value="<%=c.getCash_no()%>">
 						<input type="hidden" name="y" value="<%=y%>">
 						<input type="hidden" name="m" value="<%=m%>">
@@ -80,7 +81,7 @@
 						boolean hasReceipt = receiptMap.getOrDefault(c.getCash_no(), false);
 						if (hasReceipt) {
 					%>
-						<a href="/cashbook/cashDetail/receiptView.jsp?cashNo=<%=c.getCash_no()%>" class="text-success text-decoration-none">✅ 있음
+						<a href="/cashbook/receipt/receiptView.jsp?cashNo=<%=c.getCash_no()%>" class="text-success text-decoration-none">✅ 있음
 					<%
 						} else {
 					%>

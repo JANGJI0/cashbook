@@ -9,7 +9,7 @@
 			session.setAttribute("loginAdmin", admin);
 				
 		if(admin == null) { // 로그아웃 상태라면
-			response.sendRedirect("/cashbook/loginForm.jsp");
+			response.sendRedirect("/cashbook/login/loginForm.jsp");
 			return;
 		}
 		
@@ -58,9 +58,10 @@
 		
 		HashMap<Integer, Integer> incomeAmountMap = dao.selectTotalAmountByDay(year, month, "수입");
 		HashMap<Integer, Integer> expenseAmountMap = dao.selectTotalAmountByDay(year, month, "지출");
-		
-		 HashMap<Integer, String> memoMap = dao.selectMemoMapBy(year, month);
-		 
+		// 날짜별 메모 이모지 메소드 가져오기
+		HashMap<Integer, String> memoMap = dao.selectMemoMapBy(year, month);
+		// 날짜별 영수증 메소드 가져오기
+		 HashMap<Integer, Boolean> receiptMap = dao.selectReceiptMapBy(year, month);
 		 
 		
 	
@@ -126,19 +127,22 @@
 		<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 40px;">
 		 <!-- 가로 버튼 -->
 	  		<div class="d-flex justify-content-center gap-2 mb-2">
-				<a href="/cashbook/logout.jsp" class="btn btn-outline-danger btn-sm">로그아웃</a> 
-				<a href="/cashbook/updatePwForm.jsp" class="btn btn-outline-danger btn-sm">정보수정</a>
+				<a href="/cashbook/login/logout.jsp" class="btn btn-outline-danger btn-sm">로그아웃</a> 
+				<a href="/cashbook/login/updatePwForm.jsp" class="btn btn-outline-danger btn-sm">정보수정</a>
 			</div>
 				<hr>
+				<div class="d-flex flex-column align-items-center gap-2">
+				  <a href="/cashbook/category/categoryList.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">카테고리 리스트</a>
+				  </div>
 				<!-- 수입/지출 총액 제목 -->
+				<hr>
 				<h6 class="text-center mt-1 mb-1" style="font-weight: bold;">수입/지출 총액</h6>
-				
 				<!-- 버튼 목록 -->
 				<div class="d-flex flex-column align-items-center gap-2">
-				  <a href="/cashbook/totalAll.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">전체</a>
-				  <a href="/cashbook/totalYear.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">년도별</a>
-				  <a href="/cashbook/totalMonth.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">월별</a>
-				  <a href="/cashbook/totalCustom.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">특정년도</a>
+				  <a href="/cashbook/statistics/talAll.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">전체</a>
+				  <a href="/cashbook/statistics/totalYear.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">년도별</a>
+				  <a href="/cashbook/statistics/totalMonth.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">월별</a>
+				  <a href="/cashbook/statistics/totalCustom.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">특정년도</a>
 				</div>
 		</div>
 	</td>
@@ -148,14 +152,14 @@
 		<h2 class="text-left mb-2">가계부 달력</h2>
 		
 		<div class="d-flex justify-content-between align-items-center mb-2">
-			<div class="d-flex align-items-center mx-auto">
-				<a href="/cashbook/monthList.jsp?targetMonth=<%=firstDate.get(Calendar.MONTH) - 1%>" class="btn btn-outline-secondary btn-sm me-2">◀</a>
+			<div class="d-flex align-items-left">
+				<a href="/cashbook/monthList.jsp?targetMonth=<%=firstDate.get(Calendar.MONTH) - 1%>" class="btn btn-outline-secondary btn-sm me-3">◀</a>
 				<h3 class="m-0"><%=firstDate.get(Calendar.YEAR)%>년 <%=firstDate.get(Calendar.MONTH)+1%>월</h3>
-				<a href="/cashbook/monthList.jsp?targetMonth=<%=firstDate.get(Calendar.MONTH) + 1%>"  class="btn btn-outline-secondary btn-sm">▶</a>
+				<a href="/cashbook/monthList.jsp?targetMonth=<%=firstDate.get(Calendar.MONTH) + 1%>"  class="btn btn-outline-secondary btn-sm ms-2">▶</a>
 			</div>
 				<div>
-				<a href="/cashbook/insertCategoryForm.jsp?y=<%=year%>&m=<%=month %>" class="btn btn-outline-success btn-sm me-1">항목 추가</a>
-				<a href="/cashbook/insertCashForm.jsp?y=<%=year%>&m=<%=month %>" class="btn btn-outline-success btn-sm me-1">+ 수입/지출 등록</a>
+				<a href="/cashbook/category/insertCategoryForm.jsp?y=<%=year%>&m=<%=month %>" class="btn btn-outline-success btn-sm me-1">항목 추가</a>
+				<a href="/cashbook/category/insertCashForm.jsp?y=<%=year%>&m=<%=month %>" class="btn btn-outline-success btn-sm me-1">+ 수입/지출 등록</a>
 			</div>
 		</div>
       <!-- 이슈 : 1월이면 이전이면 -1, 12월에 다음이면 12가 넘어가는데? Calendar API안에서 자동으로 계산 -->
@@ -187,7 +191,7 @@
 					<%
 						
 						if(d > 0 && d <= lastDate) {
-							out.print(" onclick=\"location.href='/cashbook/cashDetail/cashOne.jsp?y=" + year + "&m=" + month + "&d=" + d + "'\" style=\"cursor:pointer; position: relative;\"");
+							out.print(" onclick=\"location.href='/cashbook/cash/cashOne.jsp?y=" + year + "&m=" + month + "&d=" + d + "'\" style=\"cursor:pointer; position: relative;\"");
 						}
 					%>
 						>
@@ -201,7 +205,11 @@
 							%>
 								<span title="메모 있음" class="float-end">📝</span>
 							<%
-								}
+								}    if(receiptMap.containsKey(d)) { // 영수증이 있을 경우
+							%>
+								    <span title="영수증 있음" class="float-end">🧾</span>
+							<%
+								    }
 							%>
 							</div>
 							<div class="calendar-content"></div>

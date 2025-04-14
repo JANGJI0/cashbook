@@ -21,7 +21,7 @@
 <body class="d-flex justify-content-center align-items-start vh-100 bg-light">
 <div  class="card p-4 shadow mt-5" style="width: 350px;">
 	<h3 class="text-center">카테고리 수정</h3>
-	 	<form action="/cashbook/updateCategoryAction.jsp" method="post" class="d-inline-block">
+	 	<form action="/cashbook/category/updateCategoryAction.jsp" method="post" class="d-inline-block">
 	 	<input type="hidden" name="categoryNo" value="<%=category.getCategory_no()%>">
 		<table class="text-center align-middle">
 			<tr>
@@ -39,7 +39,7 @@
 		</table>
 		<div style="margin-top: 5px;" class="text-center">
 		<button type="submit" class="btn btn-outline-primary">수정하기</button>
-		<a href="/cashbook/categoryList.jsp" class="btn btn-outline-primary">돌아가기</a>
+		<a href="/cashbook/category/categoryList.jsp" class="btn btn-outline-primary">돌아가기</a>
 		</div>
 		</form>
 	</div>

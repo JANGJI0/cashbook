@@ -25,5 +25,5 @@
         }
     }
 
-    response.sendRedirect("/cashbook/cashDetail/cashOne.jsp?y=" + y + "&m=" + m + "&d=" + d);
+    response.sendRedirect("/cashbook/cash/cashOne.jsp?y=" + y + "&m=" + m + "&d=" + d);
 %>

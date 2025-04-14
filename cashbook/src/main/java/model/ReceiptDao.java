@@ -63,12 +63,14 @@ public class ReceiptDao {
 	public int deleteReceiptByCashNo(int cashNo) throws Exception {
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		int row = 0;
 		
 		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
 		String sql = "DELETE FROM receipt WHERE cash_no = ?";
 		stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, cashNo);
-		int row = stmt.executeUpdate();
+		
+		row = stmt.executeUpdate();
 		
 		stmt.close();
 		conn.close();

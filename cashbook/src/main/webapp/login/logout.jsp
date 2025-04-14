@@ -2,5 +2,5 @@
 <%
 	// 현재 세션을 초기화
 	session.invalidate();
-	response.sendRedirect("/cashbook/loginForm.jsp");
+	response.sendRedirect("/cashbook/login/loginForm.jsp");
 %>

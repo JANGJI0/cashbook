@@ -14,7 +14,7 @@
 <div class="card p-4 shadow mt-5" style="width: 400px;">
     <h4 class="text-center mb-4">🔒 비밀번호 수정하기</h4>
 
-    <form action="/cashbook/updatePwAction.jsp" method="post">
+    <form action="/cashbook/login/updatePwAction.jsp" method="post">
         <div class="mb-3">
             <label for="currentPw" class="form-label">현재 비밀번호</label>
             <input type="password" name="currentPw" id="currentPw" class="form-control" required>
