@@ -68,7 +68,7 @@
 
 	<!-- 수입/지출 선택 폼 -->
 	<!-- 수입/지출 선택 폼 (버튼 형태로 바꿈) -->
-<form action="/cashbook/insertCashForm.jsp" method="post" class="mb-4">
+<form action="/cashbook/cash/insertCashForm.jsp" method="post" class="mb-4">
 	<input type="hidden" name="y" value="<%=year%>">
 	<input type="hidden" name="m" value="<%=month%>">
 	<input type="hidden" name="cashDate" value="<%=cashDate%>"> <!-- 그냥 넘어가면 cashDate가 안넘어오기때문 hidden값으로 받아온다 -->

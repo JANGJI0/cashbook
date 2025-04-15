@@ -139,8 +139,8 @@
 				<h6 class="text-center mt-1 mb-1" style="font-weight: bold;">수입/지출 총액</h6>
 				<!-- 버튼 목록 -->
 				<div class="d-flex flex-column align-items-center gap-2">
-				  <a href="/cashbook/statistics/talAll.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">전체</a>
-				  <a href="/cashbook/statistics/totalYear.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">년도별</a>
+				  <a href="/cashbook/statistics/totalStatsForm.jsp?kind=전체" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">전체</a>
+				  <a href="/cashbook/statistics/yearStatsForm.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">년도별</a>
 				  <a href="/cashbook/statistics/totalMonth.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">월별</a>
 				  <a href="/cashbook/statistics/totalCustom.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">특정년도</a>
 				</div>
@@ -159,7 +159,7 @@
 			</div>
 				<div>
 				<a href="/cashbook/category/insertCategoryForm.jsp?y=<%=year%>&m=<%=month %>" class="btn btn-outline-success btn-sm me-1">항목 추가</a>
-				<a href="/cashbook/category/insertCashForm.jsp?y=<%=year%>&m=<%=month %>" class="btn btn-outline-success btn-sm me-1">+ 수입/지출 등록</a>
+				<a href="/cashbook/cash/insertCashForm.jsp?y=<%=year%>&m=<%=month %>" class="btn btn-outline-success btn-sm me-1">+ 수입/지출 등록</a>
 			</div>
 		</div>
       <!-- 이슈 : 1월이면 이전이면 -1, 12월에 다음이면 12가 넘어가는데? Calendar API안에서 자동으로 계산 -->
