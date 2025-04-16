@@ -141,7 +141,7 @@
 				<div class="d-flex flex-column align-items-center gap-2">
 				  <a href="/cashbook/statistics/totalStatsForm.jsp?kind=전체" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">전체</a>
 				  <a href="/cashbook/statistics/yearStatsForm.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">년도별</a>
-				  <a href="/cashbook/statistics/totalMonth.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">월별</a>
+				  <a href="/cashbook/statistics/totalMonthForm.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">월별</a>
 				  <a href="/cashbook/statistics/totalCustom.jsp" class="btn btn-outline-primary btn-sm" style="padding: 3px 15px; font-size: 13px; width: 150px;">특정년도</a>
 				</div>
 		</div>

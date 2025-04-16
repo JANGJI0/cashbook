@@ -42,6 +42,10 @@
 			// 총합 구하기
 			int incomeTotalSum = 0;
 			int expenseTotalSum = 0;
+			
+			// 총합 건수 구하기
+			int incomeTotalCnt = 0;
+			int expenseTotalCnt = 0;
 	
 %>
 
@@ -51,10 +55,47 @@
 <head>
 <meta charset="UTF-8">
 <title><%=year %>년 월별 통계</title>
+<!-- Latest compiled and minified CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
+  .bar-wrapper {
+    height: 20px;
+    margin: 6px auto;
+    margin-bottom: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    max-width: 500px;
+  }
+  .bar {
+    height: 100%;
+    border-radius: 5px;
+    color: #fff;
+    padding-left: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 12px;
+  }
+  .bar-emoji {
+    margin-right: 5px;
+    font-size: 16px;
+  }
+  .month-group {
+    margin-bottom: 24px;
+  }
+</style>
 </head>
 <body>
-	<h2>📅<%=year %>년 월별 통계</h2>
-	<table border="1">
+	<div class="container mt-5  d-flex justify-content-center">
+    <div class="card shadow p-4" style="max-width: 800px; width: 100%;">
+	 <h3 class="text-center mb-3">📅<%=year %>년 월별 통계</h3>
 		<!--  연도 선택 드롭다운 -->
 		<form action="/cashbook/statistics/totalCustom.jsp" method="get"> <!-- post가 아닌이유: 간단한 조회용도로 하기때문 -->
 			<select name="year" onchange="this.form.submit()">
@@ -68,6 +109,8 @@
 			%>
 			</select>
 		</form>
+		<table class="table table-bordered text-center align-middle mx-auto">
+		<thead class="table-light">
 		<tr>
 			<th>월</th>
 			<th>수입</th>
@@ -76,6 +119,8 @@
 			<th>총액</th>
 			<th>합계</th>
 		</tr>
+		 </thead>
+        <tbody>
 		<%
 			for(Integer month : monYerStatsSet) {
 				CashStats income = incomeMap.getOrDefault(month, new CashStats());
@@ -84,10 +129,14 @@
 				// 총합
 				int incomeTotal = income.getTotal();
 				int expenseTotal = expense.getTotal();
+				int incomeCnt = income.getCnt();
+				int expenseCnt = expense.getCnt();
 				int diff = incomeTotal - expenseTotal;
 				
 					incomeTotalSum += incomeTotal;
+					incomeTotalCnt += incomeCnt;
 				    expenseTotalSum += expenseTotal;
+					expenseTotalCnt += expenseCnt;
 				
 				// 월별 = 수입 - 지출
 				int totalAmount = income.getTotal() - expense.getTotal();
@@ -102,7 +151,7 @@
 				if(income.getCnt() > 0) {
 			%>
 				<td><%=income.getCnt() %>건</td>
-				<td>+<%=String.format("%,d", income.getTotal())%>원</td>
+				<td class="text-success">+<%=String.format("%,d", income.getTotal())%>원</td>
 			<% } else { %>
 					
 				<td style="text-align: center;">-</td>
@@ -115,7 +164,7 @@
 				if(expense.getCnt() > 0) {
 			%>
 				<td><%=expense.getCnt() %>건</td>
-				<td>-<%=String.format("%,d", expense.getTotal())%>원</td>
+				<td class="text-danger">-<%=String.format("%,d", expense.getTotal())%>원</td>
 			
 			<%
 				} else { 
@@ -129,16 +178,23 @@
 			%>
 		   
 			<td><%=formattedTotal %>원</td>
+			
 		</tr>
 		
 			
 		<%
 			}
 		%>
-				<tr style="font-weight: bold; background-color: #f2f2f2;">
-		    <td>총합</td>
-		    <td colspan="2">+<%=String.format("%,d", incomeTotalSum)%>원</td>
-		    <td colspan="2">-<%=String.format("%,d", expenseTotalSum)%>원</td>
+		<!-- 총합 -->
+		    <td colspan="6" style="text-align: center; font-weight: bold; background-color: #f2f2f2;">
+		   		 <span style="display: inline-block; letter-spacing: 10px;">총합</span>
+		   	</td>
+			<tr>
+				<td>➕</td>
+				<td><%=incomeTotalCnt %>건</td>
+			    <td colspan="1">+<%=String.format("%,d", incomeTotalSum)%>원</td>
+			    <td><%=expenseTotalCnt %>건</td>
+			    <td colspan="1">-<%=String.format("%,d", expenseTotalSum)%>원</td>
 		    <%
 		        int finalTotal = incomeTotalSum - expenseTotalSum;
 		        String formattedFinal = (finalTotal > 0 ? "+" : (finalTotal < 0 ? "-" : "")) 
@@ -147,6 +203,47 @@
 		    <td><%=formattedFinal %>원</td>
 		</tr>
 	</table>
+	
+	<!--  그래프 영역 -->
+	<div class="text-center mt-2 mb-1">
+		<!-- 왼쪽 1~6 -->
+			<div class="d-flex flex-wrap justify-content-center">
+				<%
+					for(int m = 1; m <=12; m++) {
+						CashStats income = incomeMap.getOrDefault(m, new CashStats());
+						CashStats expense = expenseMap.getOrDefault(m, new CashStats());
+						int total = income.getTotal() + expense.getTotal();
+						double incomePercent = (total > 0) ? income.getTotal() * 100.0 / total : 0;
+						double expensePercent = (total > 0) ? expense.getTotal() * 100.0 / total : 0;
+						
+						int incomeRatio = (int)incomePercent;
+						int expenseRatio = (int)expensePercent;
+				%>
+					<div class="p-2 text-center" style="width: 23%; min-width: 140px; margin: 2px;">
+						<h6><%=m %>월</h6>
+						<div class="bar-wrapper">
+							<div class="bar" style="width: <%=incomeRatio %>%; background-color: #4CAF50;">
+								<span><%=String.format("%.1f", incomePercent) %>%</span>
+								<span class="bar-emoji" style="transform: scaleX(-1);">🐢</span>
+							</div>
+						</div>
+						<div class="bar-wrapper">
+							<div class="bar" style="width: <%=expenseRatio %>%; background-color: #F44336;">
+							<span><%=String.format("%.1f", expensePercent) %>%</span>
+							<span class="bar-emoji" style="transform: scaleX(-1);">🐇</span>
+							</div>
+						</div>
+					</div>
+				<%
+					}
+				%>
+		</div>
+	</div>
+	<div class="text-center mt-4">
+        <a href="/cashbook/monthList.jsp" class="btn btn-secondary">달력으로 돌아가기</a>
+      </div>
+     </div>
+    </div>
 </body>
 </html>
 
