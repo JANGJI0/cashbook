@@ -7,7 +7,7 @@
 + 가계부 구조 이해
 + 쿼리 구조 이해
 + UI 스케치
-  #
+#💻
   [![My Skills](https://skillicons.dev/icons?i=js,html,css,wasm)](https://skillicons.dev)
 
   <img src="https://img.shields.io/badge/표시할이름-색상?style=for-the-badge&logo=기술스택아이콘&logoColor=white">
