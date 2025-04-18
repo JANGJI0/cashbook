@@ -15,8 +15,8 @@
 <table>
   <tr>
     <th height=auto>가계부 달력 화면</th>
-    <th>수입/지출 내역 등록</th>
-    <th>수입/지출 내역 통계</th>
+    <th>수입/지출 내역</th>
+    <th>수입/지출 통계</th>
   </tr>
   <tr>
     <td><img src="https://github.com/user-attachments/assets/f5aee43d-b86b-4b36-9364-16e1311acf4d" height="250"/></td>
